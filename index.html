@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portfolio - Suyash</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +24,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -233,18 +234,81 @@
         }
 
         @media (max-width: 768px) {
-            .bottom-title h1 { font-size: 48px; }
-            .bottom-title { left: 30px; bottom: 30px; }
-            .content-container { left: 30px; top: 10vh; width: 90vw;}
-            .intro-text, .skills-column ul, .category-title, .project-link { font-size: 18px; }
-            .navigation { top: 30px; right: 30px; }
-            .theme-toggle { right: 30px; bottom: 30px; }
+            .navigation {
+                top: 30px;
+                right: 30px;
+                gap: 10px;
+            }
+
+            .navigation a {
+                font-size: 13px;
+            }
+
+            .theme-toggle {
+                bottom: 30px;
+                right: 30px;
+                font-size: 13px;
+            }
+
+            .bottom-title {
+                left: 30px;
+                bottom: 30px;
+                max-width: 80vw;
+            }
+
+            .bottom-title h1 {
+                font-size: 48px;
+                letter-spacing: -1px;
+            }
+
+            .content-container {
+                left: 30px;
+                right: 30px;
+                top: 10vh;
+                width: auto;
+                max-width: 100%;
+            }
+
+            .intro-text {
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+            .breadcrumb {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+
+            .skills-wrapper, .projects-wrapper {
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .skills-column, .project-category {
+                min-width: 100%;
+            }
+
+            .skills-column ul, .category-title, .project-link {
+                font-size: 16px;
+            }
+
+            .project-link {
+                padding: 4px 0;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .bottom-title h1 {
+                font-size: 38px;
+            }
             
-            .projects-wrapper { gap: 20px; }
-            .project-category { min-width: 100%; }
-            .skills-wrapper { gap: 20px; }
-            .skills-column { min-width: 100%; }
-            .breadcrumb { font-size: 16px; margin-bottom: 15px; }
+            .navigation a {
+                font-size: 12px;
+            }
+
+            .intro-text, .skills-column ul, .category-title, .project-link {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -488,7 +552,7 @@
         let currentIndex = 0;
         let isAnimating = false;
 
-        function changeSection(targetId, updateHistory = true) {
+        function changeSection(targetId) {
             if (isAnimating || targetId === sectionOrder[currentIndex]) return;
             
             const newIndex = sectionOrder.indexOf(targetId);
