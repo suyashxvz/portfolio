@@ -468,35 +468,115 @@
             'contact': 'Contact'
         };
 
+        const sectionOrder = [
+            'home', 
+            'about', 
+            'skills', 
+            'uiux', 
+            'productdev', 
+            'caddesign', 
+            'pcbdesign', 
+            'webdev', 
+            'python', 
+            'kotlin', 
+            'industrial', 
+            'camdesign', 
+            'projects', 
+            'contact'
+        ];
+
+        let currentIndex = 0;
+        let isAnimating = false;
+
+        function changeSection(targetId, updateHistory = true) {
+            if (isAnimating || targetId === sectionOrder[currentIndex]) return;
+            
+            const newIndex = sectionOrder.indexOf(targetId);
+            if (newIndex === -1) return;
+
+            isAnimating = true;
+            currentIndex = newIndex;
+
+            navLinks.forEach(nav => {
+                if(nav.closest('.navigation')) {
+                    if(nav.getAttribute('data-target') === targetId) {
+                        nav.classList.add('active');
+                    } else {
+                        nav.classList.remove('active');
+                    }
+                }
+            });
+
+            mainHeading.style.opacity = '0'; 
+            
+            setTimeout(() => {
+                mainHeading.innerHTML = headingTexts[targetId];
+                mainHeading.style.opacity = '1'; 
+            }, 200); 
+
+            contentBlocks.forEach(block => {
+                if (block.id === targetId) {
+                    block.classList.add('active');
+                } else {
+                    block.classList.remove('active');
+                }
+            });
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600);
+        }
+
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault(); 
-
-                if(link.closest('.navigation')) {
-                    navLinks.forEach(nav => {
-                        if(nav.closest('.navigation')) nav.classList.remove('active');
-                    });
-                    link.classList.add('active');
-                }
-
                 const targetId = link.getAttribute('data-target');
-
-                mainHeading.style.opacity = '0'; 
-                
-                setTimeout(() => {
-                    mainHeading.innerHTML = headingTexts[targetId];
-                    mainHeading.style.opacity = '1'; 
-                }, 200); 
-
-                contentBlocks.forEach(block => {
-                    if (block.id === targetId) {
-                        block.classList.add('active');
-                    } else {
-                        block.classList.remove('active');
-                    }
-                });
+                changeSection(targetId);
             });
         });
+
+        let scrollTimeout;
+        window.addEventListener('wheel', (e) => {
+            if (isAnimating) return;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    if (currentIndex < sectionOrder.length - 1) {
+                        changeSection(sectionOrder[currentIndex + 1]);
+                    }
+                } else if (e.deltaY < 0) {
+                    if (currentIndex > 0) {
+                        changeSection(sectionOrder[currentIndex - 1]);
+                    }
+                }
+            }, 50);
+        }, { passive: true });
+
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            if (isAnimating) return;
+            
+            const touchEndY = e.changedTouches[0].screenY;
+            const diff = touchStartY - touchEndY;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    if (currentIndex < sectionOrder.length - 1) {
+                        changeSection(sectionOrder[currentIndex + 1]);
+                    }
+                } else {
+                    if (currentIndex > 0) {
+                        changeSection(sectionOrder[currentIndex - 1]);
+                    }
+                }
+            }
+        }, { passive: true });
+
     </script>
 
 </body>
