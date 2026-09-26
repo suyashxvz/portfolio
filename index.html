@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Suyash</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root, [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; 
+            position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .navigation {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 400;
+            transition: color 0.3s ease, opacity 0.2s ease;
+            cursor: pointer;
+        }
+
+        .navigation a:hover, .navigation a.active {
+            opacity: 0.6;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-family: inherit;
+            transition: color 0.3s ease, opacity 0.2s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.6;
+        }
+
+        .bottom-title {
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            z-index: 10;
+        }
+
+        .bottom-title h1 {
+            font-size: 96px;
+            line-height: 1.1;
+            font-weight: 500;
+            letter-spacing: -2px;
+            transition: opacity 0.3s ease;
+        }
+
+        .content-container {
+            position: absolute;
+            top: 12vh;
+            left: 60px;
+            width: 700px; 
+            max-width: 85vw;
+            z-index: 50;
+        }
+
+        .content-block {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            width: 100%;
+        }
+
+        .content-block.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .intro-text {
+            font-size: 27px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .breadcrumb {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breadcrumb span {
+            opacity: 0.6;
+        }
+
+        .contact-link {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .contact-link:hover {
+            opacity: 0.6;
+            text-decoration: underline;
+        }
+
+        .skills-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px; 
+            width: 100%;
+        }
+
+        .skills-column {
+            display: flex;
+            flex-direction: column;
+            gap: 5px; 
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .skills-column ul {
+            list-style: none;
+            font-size: 27px;
+            line-height: 1.4;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+        }
+
+        .skill-link {
+            text-decoration: none;
+            color: var(--text-color);
+            transition: opacity 0.2s ease, padding-left 0.2s ease;
+            display: inline-block;
+        }
+
+        .skill-link:hover {
+            opacity: 0.6;
+            padding-left: 5px;
+        }
+
+        .projects-wrapper {
+            display: flex;       
+            flex-wrap: wrap;     
+            gap: 50px;           
+            width: 100%;
+        }
+
+        .project-category {
+            display: flex;
+            flex-direction: column;
+            gap: 5px; 
+            flex: 1;  
+            min-width: 200px; 
+        }
+
+        .category-title {
+            font-size: 27px;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+
+        .project-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 27px;
+            line-height: 1.4;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            transition: opacity 0.2s ease, padding-left 0.2s ease;
+            width: fit-content;
+        }
+
+        .project-link:hover {
+            opacity: 0.6;
+            padding-left: 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .intro-text, .skills-column ul, .category-title, .project-link { font-size: 22px; }
+            .projects-wrapper { gap: 30px; }
+            .skills-wrapper { gap: 30px; }
+            .breadcrumb { font-size: 18px; margin-bottom: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .bottom-title h1 { font-size: 48px; }
+            .bottom-title { left: 30px; bottom: 30px; }
+            .content-container { left: 30px; top: 10vh; width: 90vw;}
+            .intro-text, .skills-column ul, .category-title, .project-link { font-size: 18px; }
+            .navigation { top: 30px; right: 30px; }
+            .theme-toggle { right: 30px; bottom: 30px; }
+            
+            .projects-wrapper { gap: 20px; }
+            .project-category { min-width: 100%; }
+            .skills-wrapper { gap: 20px; }
+            .skills-column { min-width: 100%; }
+            .breadcrumb { font-size: 16px; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navigation">
+        <a href="#" class="nav-link active" data-target="home">Home</a>
+        <a href="#" class="nav-link" data-target="about">About Me</a>
+        <a href="#" class="nav-link" data-target="skills">Skills</a>
+        <a href="#" class="nav-link" data-target="projects">Projects</a>
+        <a href="#" class="nav-link" data-target="contact">Contact</a>
+    </nav>
+
+    <div class="content-container">
+        
+        <div class="content-block active" id="home">
+        </div>
+
+        <div class="content-block" id="about">
+            <p class="intro-text">
+                Hey, I'm Suyash. I'm a developer, designer, and proud breaker-of-things (all in the name of figuring out how they work!). Guided by the motto 'The Best or Nothing,' I love taking abstract design visions and building complete, working prototypes around them."
+            </p>
+        </div>
+
+        <div class="content-block" id="skills">
+            <div class="skills-wrapper">
+                <div class="skills-column">
+                    <ul>
+                        <li><a href="#" class="nav-link skill-link" data-target="uiux">UI/UX Designing</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="productdev">Product Development</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="caddesign">CAD Designing</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="pcbdesign">PCB Designing (learning)</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="webdev">HTML,CSS, JS</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="python">Python</a></li>
+                    </ul>
+                </div>
+                
+                <div class="skills-column">
+                    <ul>
+                        <li><a href="#" class="nav-link skill-link" data-target="kotlin">Kotlin (learning)</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="industrial">Industrial Designing</a></li>
+                        <li><a href="#" class="nav-link skill-link" data-target="camdesign">CAM Designing</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-block" id="uiux">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                UI/UX Designing
+            </div>
+            <p class="intro-text">
+                As a self-taught UI/UX designer and maker, I live by 'The Best or Nothing.' Whether I'm experimenting with color theory or breaking down complex user journeys through trial and error, my goal is always the same: to design intentional interfaces and build them into complete, working prototypes."
+            </p>
+        </div>
+
+        <div class="content-block" id="productdev">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                Product Development
+            </div>
+            <p class="intro-text">
+                Growing up surrounded by an industrial background gave me an insider's view of how products are engineered and manufactured from the ground up. I combine that deep-rooted mechanical intuition with modern software and hardware prototyping, taking concepts all the way from raw ideas to fully functional, real-world solutions.
+            </p>
+        </div>
+
+        <div class="content-block" id="caddesign">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                CAD Designing
+            </div>
+            <p class="intro-text">
+                Armed with an industrial background, a Bambu Lab A1 Mini, and a relentless drive for 'The Best or Nothing,' I specialize in CAD design and rapid hardware prototyping. Whether it's iterating through trial and error or translating digital wireframes into functional physical parts, I love bringing designs off the screen and into the real world.
+            </p>
+        </div>
+
+        <div class="content-block" id="pcbdesign">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                PCB Designing
+            </div>
+            <p class="intro-text">
+                Driven by a deep curiosity for how electronics work under the hood, I love tinkering with microcontrollers and custom components. By learning to design custom printed circuit boards, I intend on bridging the gap between messy breadboard prototypes and clean, professional hardware systems.
+            </p>
+        </div>
+
+        <div class="content-block" id="webdev">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                HTML, CSS, JS
+            </div>
+            <p class="intro-text">
+                Starting with a solid foundation in HTML, CSS, and JavaScript, I’ve expanded my skills into complete, end-to-end web engineering. I design and build robust web applications from the ground up, ensuring every digital experience is as functional under the hood as it is polished on the surface.
+            </p>
+        </div>
+
+        <div class="content-block" id="python">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                Python
+            </div>
+            <p class="intro-text">
+                Leveraging Python alongside my full-stack web background, I write clean, efficient logic to power backend systems, automation, and complex problem-solving from the ground up.
+            </p>
+        </div>
+
+        <div class="content-block" id="kotlin">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                Kotlin (Mobile Development)
+            </div>
+            <p class="intro-text">
+                Actively expanding my software development expertise into mobile engineering with Kotlin. Guided by the motto 'The Best or Nothing,' I am building a strong foundation in the Android ecosystem to design and code native, high-performance mobile applications that complement my full-stack and UI/UX workflow.
+            </p>
+        </div>
+
+        <div class="content-block" id="industrial">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                Industrial Designing
+            </div>
+            <p class="intro-text">
+                Grounded in a lifelong industrial family background, my approach to Industrial Design merges deep mechanical intuition with modern user-centric form and function. I design physical products with the philosophy that every structural and aesthetic detail must reflect 'The Best or Nothing.'
+            </p>
+        </div>
+
+        <div class="content-block" id="camdesign">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-target="skills" style="text-decoration: none; color: inherit;">Skills</a> 
+                <span>&gt;</span> 
+                CAM Designing
+            </div>
+            <p class="intro-text">
+                Bridging the gap between digital CAD models and physical fabrication through precision CAM Design. By optimizing toolpaths and manufacturing parameters—and bringing them to life using rapid hardware prototyping on my Bambu Lab A1 Mini—I ensure every physical part meets the uncompromising standard of 'The Best or Nothing.'
+            </p>
+        </div>
+
+        <div class="content-block" id="projects">
+            <div class="projects-wrapper">
+                <div class="project-category">
+                    <div class="category-title">(Websites)</div>
+                    <a href="#" class="project-link">ACE Industries</a>
+                    <a href="#" class="project-link">MKK. Watches</a>
+                    <a href="#" class="project-link">SDG Torch</a>
+                    <a href="#" class="project-link">LTP Charger</a>
+                </div>
+
+                <div class="project-category">
+                    <div class="category-title">(Applications)</div>
+                    <a href="#" class="project-link">Nexus AI</a>
+                    <a href="#" class="project-link">Nexus Clock</a>
+                    <a href="#" class="project-link">Nexus Calendar</a>
+                    <a href="#" class="project-link">Nexus Music Player</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-block" id="contact">
+            <p class="intro-text">Let's get in touch. Reach out to me at <br>
+                <a href="mailto:suyashxvz@gmail.com" class="contact-link">suyashxvz@gmail.com</a>
+            </p>
+        </div>
+
+    </div>
+
+    <div class="bottom-title">
+        <h1 id="main-heading">Hello,<br>I am Suyash</h1>
+    </div>
+
+    <button class="theme-toggle" id="theme-toggle">
+        Toggle Theme
+    </button>
+
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            htmlElement.setAttribute('data-theme', currentTheme);
+        }
+
+        toggleButton.addEventListener('click', () => {
+            let theme = htmlElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentBlocks = document.querySelectorAll('.content-block');
+        const mainHeading = document.getElementById('main-heading');
+
+        const headingTexts = {
+            'home': 'Hello,<br>I am Suyash',
+            'about': 'About Me',
+            'skills': 'Skills',
+            'uiux': 'UI/UX Designing', 
+            'productdev': 'Product Development',
+            'caddesign': 'CAD Designing', 
+            'pcbdesign': 'PCB Designing', 
+            'webdev': 'HTML, CSS, JS',
+            'python': 'Python', 
+            'kotlin': 'Kotlin', 
+            'industrial': 'Industrial Designing', 
+            'camdesign': 'CAM Designing', 
+            'projects': 'Projects',
+            'contact': 'Contact'
+        };
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); 
+
+                if(link.closest('.navigation')) {
+                    navLinks.forEach(nav => {
+                        if(nav.closest('.navigation')) nav.classList.remove('active');
+                    });
+                    link.classList.add('active');
+                }
+
+                const targetId = link.getAttribute('data-target');
+
+                mainHeading.style.opacity = '0'; 
+                
+                setTimeout(() => {
+                    mainHeading.innerHTML = headingTexts[targetId];
+                    mainHeading.style.opacity = '1'; 
+                }, 200); 
+
+                contentBlocks.forEach(block => {
+                    if (block.id === targetId) {
+                        block.classList.add('active');
+                    } else {
+                        block.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
